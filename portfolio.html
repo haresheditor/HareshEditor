@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,500;1,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#FF8000;
+    --orange-dim:#cc6600;
+    --black:#0a0a0a;
+    --black-soft:#141414;
+    --white:#ffffff;
+    --off:#f4f4f2;
+    --gray:#8a8a8a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--white);
+    color:var(--black);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  a{text-decoration:none;color:inherit;}
+  ul{list-style:none;}
+  img,video{display:block;max-width:100%;}
+  ::selection{background:var(--orange);color:var(--black);}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    padding:22px 0;
+    transition:background .35s ease, padding .35s ease;
+  }
+  header.scrolled{
+    background:rgba(10,10,10,0.92);
+    backdrop-filter:blur(10px);
+    padding:14px 0;
+  }
+  nav.wrap{display:flex;align-items:center;justify-content:space-between;}
+  .logo{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;color:var(--white);}
+  .logo em{color:var(--orange);font-style:italic;}
+  .nav-links{display:flex;gap:34px;}
+  .nav-links a{
+    color:var(--white);font-size:13.5px;font-weight:600;
+    letter-spacing:.02em;text-transform:uppercase;
+    position:relative;padding-bottom:4px;
+  }
+  .nav-links a::after{
+    content:"";position:absolute;left:0;bottom:0;width:0;height:1.5px;background:var(--orange);
+    transition:width .25s ease;
+  }
+  .nav-links a:hover::after{width:100%;}
+  .nav-cta{
+    background:var(--orange);color:var(--black);
+    padding:10px 22px;border-radius:999px;
+    font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .nav-cta:hover{transform:translateY(-2px);background:var(--white);}
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+  .burger span{width:24px;height:2px;background:var(--white);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:var(--black);
+    color:var(--white);
+    padding:170px 0 0;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";position:absolute;top:-200px;right:-150px;width:600px;height:600px;
+    background:radial-gradient(circle, rgba(255,128,0,0.25) 0%, rgba(255,128,0,0) 70%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    color:var(--orange);font-size:13px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.14em;
+    margin-bottom:26px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:var(--orange);}
+  .hero h1{
+    font-size:clamp(44px,7vw,92px);
+    line-height:1.03;
+    max-width:900px;
+  }
+  .hero h1 .accent{color:var(--orange);font-style:italic;font-weight:600;}
+  .hero p.sub{
+    font-family:'Inter',sans-serif;font-weight:500;
+    color:#c9c9c9;font-size:17px;max-width:480px;
+    margin-top:26px;line-height:1.6;
+  }
+  .hero-actions{display:flex;align-items:center;gap:24px;margin-top:40px;}
+  .btn-primary{
+    background:var(--orange);color:var(--black);
+    padding:16px 34px;border-radius:999px;font-size:14px;
+    font-weight:700;text-transform:uppercase;letter-spacing:.03em;
+    display:inline-block;transition:transform .2s ease, box-shadow .2s ease;
+    border:1px solid var(--orange);
+  }
+  .btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(255,128,0,.35);}
+  .btn-ghost{
+    color:var(--white);font-size:14px;font-weight:600;
+    border-bottom:1px solid var(--white);padding-bottom:3px;
+  }
+  .btn-ghost:hover{color:var(--orange);border-color:var(--orange);}
+
+  /* marquee ticker */
+  .ticker{
+    margin-top:90px;
+    background:var(--orange);
+    padding:16px 0;
+    overflow:hidden;
+    white-space:nowrap;
+    border-top:1px solid #000;
+    border-bottom:1px solid #000;
+  }
+  .ticker-track{display:inline-flex;animation:scroll 26s linear infinite;}
+  .ticker-track span{
+    color:var(--black);font-family:'Playfair Display',serif;font-style:italic;
+    font-weight:700;font-size:20px;padding:0 26px;
+    display:inline-flex;align-items:center;gap:26px;
+  }
+  .ticker-track span::after{content:"✦";font-style:normal;font-family:'Inter',sans-serif;font-size:14px;}
+  @keyframes scroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+  }
+
+  /* ---------- REEL ---------- */
+  .reel-section{background:var(--black);padding:70px 0 100px;}
+  .reel-scroll{
+    display:flex;gap:18px;overflow-x:auto;padding:0 32px 20px;
+    scroll-snap-type:x mandatory;
+  }
+  .reel-scroll::-webkit-scrollbar{height:6px;}
+  .reel-scroll::-webkit-scrollbar-thumb{background:var(--orange);border-radius:10px;}
+  .reel-card{
+    flex:0 0 220px;height:390px;border-radius:18px;overflow:hidden;
+    position:relative;scroll-snap-align:start;
+    border:1px solid #262626;background:#111;
+  }
+  .reel-card video{width:100%;height:100%;object-fit:cover;}
+  .reel-card .tag{
+    position:absolute;bottom:14px;left:14px;
+    background:rgba(255,128,0,0.92);color:var(--black);
+    font-size:11px;font-weight:700;text-transform:uppercase;
+    padding:5px 10px;border-radius:999px;letter-spacing:.03em;
+  }
+
+  /* ---------- SECTION LABELS ---------- */
+  .label-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+  .label-row .num{
+    font-family:'Playfair Display',serif;font-style:italic;color:var(--orange);font-size:15px;
+  }
+  .label-row .line{flex:1;height:1px;background:#2a2a2a;}
+  .section-title{font-size:clamp(30px,4vw,48px);margin-bottom:16px;}
+  .section-title .accent{color:var(--orange);font-style:italic;}
+
+  /* ---------- IMPACT ---------- */
+  .impact{background:var(--black);color:var(--white);padding:40px 0 110px;}
+  .impact .wrap > .label-row .line{background:#2a2a2a;}
+  .impact-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center;margin-top:40px;}
+  .impact-copy p{font-size:18px;line-height:1.7;color:#d6d6d6;font-weight:500;max-width:480px;}
+  .impact-copy p strong{color:var(--orange);font-weight:700;}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  .stat{border-top:1px solid #2a2a2a;padding-top:16px;}
+  .stat .num{font-family:'Playfair Display',serif;font-size:44px;color:var(--orange);font-weight:700;}
+  .stat .cap{font-size:12.5px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-top:6px;}
+
+  /* ---------- ABOUT ---------- */
+  .about{background:var(--white);padding:120px 0;}
+  .about-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:70px;align-items:center;}
+  .about-photo{
+    aspect-ratio:4/5;border-radius:22px;overflow:hidden;
+    background:linear-gradient(160deg,#1a1a1a,#000);
+    position:relative;
+  }
+  .about-photo img{width:100%;height:100%;object-fit:cover;opacity:.92;}
+  .about-photo::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(160deg, rgba(255,128,0,.18), transparent 55%);
+  }
+  .about-text h2{font-size:clamp(28px,3.6vw,42px);line-height:1.2;margin-bottom:22px;}
+  .about-text h2 .accent{color:var(--orange);font-style:italic;}
+  .about-text p{font-size:16px;line-height:1.75;color:#4a4a4a;font-weight:500;max-width:520px;margin-bottom:14px;}
+
+  /* ---------- SERVICES ---------- */
+  .services{background:var(--off);padding:120px 0;}
+  .service-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#dcdcda;border:1px solid #dcdcda;margin-top:50px;}
+  .service-card{
+    background:var(--off);padding:38px 22px;min-height:220px;
+    display:flex;flex-direction:column;justify-content:space-between;
+    transition:background .25s ease, color .25s ease;
+    cursor:default;
+  }
+  .service-card .idx{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--orange);}
+  .service-card h3{font-family:'Inter',sans-serif;font-weight:700;font-size:16px;margin-top:60px;letter-spacing:-.01em;}
+  .service-card:hover{background:var(--black);color:var(--white);}
+  .service-card:hover .idx{color:var(--orange);}
+
+  /* ---------- TESTIMONIALS ---------- */
+  .testimonials{background:var(--black);color:var(--white);padding:120px 0;}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:50px;}
+  .testi-card{
+    background:var(--black-soft);border:1px solid #262626;border-radius:16px;
+    padding:32px 26px;
+  }
+  .testi-card .quote-mark{color:var(--orange);font-family:'Playfair Display',serif;font-size:40px;line-height:1;}
+  .testi-card p{font-size:15px;line-height:1.7;color:#d0d0d0;font-weight:500;margin:14px 0 22px;}
+  .testi-name{font-family:'Playfair Display',serif;font-weight:700;font-size:15px;color:var(--white);}
+  .testi-role{font-size:12px;color:var(--orange);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{background:var(--white);padding:120px 0;}
+  .contact-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:70px;}
+  .contact-left h2{font-size:clamp(30px,4vw,50px);line-height:1.15;}
+  .contact-left h2 .accent{color:var(--orange);font-style:italic;}
+  .contact-left p{font-size:16px;color:#4a4a4a;font-weight:500;margin-top:22px;line-height:1.7;max-width:400px;}
+  .contact-meta{margin-top:44px;}
+  .contact-meta .row{display:flex;flex-direction:column;margin-bottom:24px;}
+  .contact-meta .cap{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gray);margin-bottom:6px;}
+  .contact-meta a{font-family:'Playfair Display',serif;font-size:19px;color:var(--black);}
+  .contact-meta a:hover{color:var(--orange);}
+  .social-row{display:flex;gap:16px;margin-top:10px;}
+  .social-row a{
+    width:38px;height:38px;border-radius:50%;border:1px solid #ddd;
+    display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+  }
+  .social-row a:hover{background:var(--orange);border-color:var(--orange);color:var(--black);}
+
+  form{display:flex;flex-direction:column;gap:20px;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  label{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--gray);margin-bottom:8px;display:block;}
+  input,select,textarea{
+    width:100%;border:none;border-bottom:2px solid #e2e2e0;
+    padding:12px 2px;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;
+    background:transparent;color:var(--black);
+    transition:border-color .2s ease;
+  }
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--orange);}
+  textarea{resize:vertical;min-height:90px;}
+  .submit-btn{
+    align-self:flex-start;margin-top:10px;
+    background:var(--black);color:var(--white);
+    padding:16px 36px;border-radius:999px;border:none;
+    font-family:'Inter',sans-serif;font-weight:700;font-size:14px;
+    text-transform:uppercase;letter-spacing:.03em;cursor:pointer;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .submit-btn:hover{background:var(--orange);color:var(--black);transform:translateY(-2px);}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:var(--black);color:var(--gray);padding:34px 0;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;}
+  footer .logo{font-size:16px;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:900px){
+    .nav-links{display:none;}
+    .burger{display:flex;}
+    .impact-grid,.about-grid,.contact-grid{grid-template-columns:1fr;}
+    .service-grid{grid-template-columns:repeat(2,1fr);}
+    .testi-grid{grid-template-columns:1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .about-photo{max-width:340px;}
+  }
+  @media(prefers-reduced-motion: reduce){
+    .ticker-track{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <nav class="wrap">
+    <a href="#top" class="logo">Tanmoy <em>Das</em></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">Contact me</a>
+    <div class="burger" id="burger"><span></span><span></span><span></span></div>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap">
+    <span class="eyebrow">100K+ views driven</span>
+    <h1>Turn viewers<br>into <span class="accent">leads</span></h1>
+    <p class="sub">I'm a video editor helping brands and creators connect — high-retention edits that hold attention and turn scrollers into customers.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start a project</a>
+      <a href="#work" class="btn-ghost">See the work</a>
+    </div>
+  </div>
+  <div class="ticker">
+    <div class="ticker-track">
+      <span>Short-form</span><span>Long-form</span><span>Motion graphics</span><span>Talking head</span><span>Podcast clips</span>
+      <span>Short-form</span><span>Long-form</span><span>Motion graphics</span><span>Talking head</span><span>Podcast clips</span>
+    </div>
+  </div>
+</section>
+
+<section class="reel-section" id="work">
+  <div class="wrap">
+    <div class="label-row"><span class="num">01</span><span class="line"></span></div>
+  </div>
+  <div class="reel-scroll" id="reelScroll">
+    <div class="reel-card"><video src="https://framerusercontent.com/assets/IbiQXnrUIm0uFWGCsk8uAc3lAY.mp4" muted loop playsinline autoplay></video><span class="tag">Short-form</span></div>
+    <div class="reel-card"><video src="https://framerusercontent.com/assets/0fLJbnrjS3BkFLQDu9w4K1Bgi5w.mp4" muted loop playsinline autoplay></video><span class="tag">Motion</span></div>
+    <div class="reel-card"><video src="https://framerusercontent.com/assets/n0MPXzWWltyLTExGWhPLmLD75sE.mp4" muted loop playsinline autoplay></video><span class="tag">Talking head</span></div>
+    <div class="reel-card"><video src="https://framerusercontent.com/assets/Y3dj5EAR3ePDDTc0L2z5rrM.mp4" muted loop playsinline autoplay></video><span class="tag">Podcast</span></div>
+    <div class="reel-card"><video src="https://framerusercontent.com/assets/3LdubMtYNwxGmcgfQzijAG1mChA.mp4" muted loop playsinline autoplay></video><span class="tag">Long-form</span></div>
+    <div class="reel-card"><video src="https://framerusercontent.com/assets/qoiB1hYL10NlXBTNzcIcz9AGYY.mp4" muted loop playsinline autoplay></video><span class="tag">Short-form</span></div>
+    <div class="reel-card"><video src="https://framerusercontent.com/assets/IQCWd80gMEizr80r0ExuZTkrig.mp4" muted loop playsinline autoplay></video><span class="tag">Motion</span></div>
+    <div class="reel-card"><video src="https://framerusercontent.com/assets/NuCO6sc0Ppc97SMBCB0GYTSOgJA.mp4" muted loop playsinline autoplay></video><span class="tag">Talking head</span></div>
+  </div>
+</section>
+
+<section class="impact">
+  <div class="wrap">
+    <div class="label-row"><span class="num">02</span><span class="line"></span></div>
+    <div class="impact-grid">
+      <div class="impact-copy">
+        <h2 class="section-title">The <span class="accent">impact</span></h2>
+        <p>Most clients see their content break past the usual noise — the right kind of attention, not just more of it. <strong>That shift brings real movement:</strong> people click, stay, and convert.</p>
+      </div>
+      <div class="stat-grid">
+        <div class="stat"><div class="num">3/5</div><div class="cap">Clients see breakout results</div></div>
+        <div class="stat"><div class="num">200%+</div><div class="cap">Average impression lift</div></div>
+        <div class="stat"><div class="num">100K+</div><div class="cap">Views driven</div></div>
+        <div class="stat"><div class="num">5</div><div class="cap">Formats covered end to end</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="wrap about-grid">
+    <div class="about-photo">
+      <img src="https://framerusercontent.com/images/EKOTsgZbeSyHeV0E9wEv9OUc.jpg" alt="Portrait">
+    </div>
+    <div class="about-text">
+      <div class="label-row"><span class="num">03</span><span class="line"></span></div>
+      <h2>I help brands and creators stand out with videos that do more than look good — they <span class="accent">perform</span>.</h2>
+      <p>From polished edits to motion graphics, I craft content designed to capture attention, build trust, and drive real growth across every platform.</p>
+      <a href="#contact" class="btn-ghost" style="color:#000;border-color:#000;">Work with me →</a>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="label-row"><span class="num">04</span><span class="line"></span></div>
+    <h2 class="section-title">What I <span class="accent">offer</span></h2>
+  </div>
+  <div class="service-grid wrap" style="padding-left:0;padding-right:0;max-width:1200px;">
+    <div class="service-card"><span class="idx">01</span><h3>Short-form content</h3></div>
+    <div class="service-card"><span class="idx">02</span><h3>Motion graphics</h3></div>
+    <div class="service-card"><span class="idx">03</span><h3>Long-form content</h3></div>
+    <div class="service-card"><span class="idx">04</span><h3>Talking head videos</h3></div>
+    <div class="service-card"><span class="idx">05</span><h3>Podcast clips</h3></div>
+  </div>
+</section>
+
+<section class="testimonials" id="testimonials">
+  <div class="wrap">
+    <div class="label-row"><span class="num">05</span><span class="line" style="background:#2a2a2a;"></span></div>
+    <h2 class="section-title">What clients <span class="accent">think</span></h2>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="quote-mark">“</div>
+        <p>Our engagement jumped almost overnight. The edits just hit different — people actually finish watching now.</p>
+        <div class="testi-name">Client, D2C brand</div>
+        <div class="testi-role">Short-form campaign</div>
+      </div>
+      <div class="testi-card">
+        <div class="quote-mark">“</div>
+        <p>Every video felt intentional. Tanmoy understood the story before he touched a single clip.</p>
+        <div class="testi-name">Client, SaaS founder</div>
+        <div class="testi-role">Talking head series</div>
+      </div>
+      <div class="testi-card">
+        <div class="quote-mark">“</div>
+        <p>Turnaround was fast, quality never dropped, and the numbers backed it up within weeks.</p>
+        <div class="testi-name">Client, Podcast host</div>
+        <div class="testi-role">Podcast clips</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-left">
+      <div class="label-row"><span class="num">06</span><span class="line"></span></div>
+      <h2>Take the <span class="accent">first step</span></h2>
+      <p>Let's build the success your business deserves. Make your next big move, starting now — get in touch today.</p>
+      <div class="contact-meta">
+        <div class="row">
+          <span class="cap">Email</span>
+          <a href="mailto:hello@example.com">hello@example.com</a>
+        </div>
+        <div class="row">
+          <span class="cap">Social</span>
+          <div class="social-row">
+            <a href="#" aria-label="LinkedIn">in</a>
+            <a href="#" aria-label="Instagram">ig</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <form onsubmit="return false;">
+      <div class="form-row">
+        <div><label>Full name</label><input type="text" placeholder="Your name" required></div>
+        <div><label>Email address</label><input type="email" placeholder="you@email.com" required></div>
+      </div>
+      <div>
+        <label>Service</label>
+        <select>
+          <option>Select…</option>
+          <option>Short-form content</option>
+          <option>Long-form content</option>
+          <option>Talking head video</option>
+          <option>Motion graphics</option>
+          <option>Podcast clips</option>
+        </select>
+      </div>
+      <div>
+        <label>Message</label>
+        <textarea placeholder="Tell me about your project"></textarea>
+      </div>
+      <button class="submit-btn" type="submit">Submit request</button>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a href="#top" class="logo">Tanmoy <em>Das</em></a>
+    <span>© 2026 — All rights reserved</span>
+  </div>
+</footer>
+
+<script>
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  // mobile burger toggles inline nav
+  const burger = document.getElementById('burger');
+  const navLinks = document.querySelector('.nav-links');
+  burger.addEventListener('click', () => {
+    const open = navLinks.style.display === 'flex';
+    navLinks.style.display = open ? 'none' : 'flex';
+    navLinks.style.cssText += open ? '' : 'position:fixed;top:70px;left:0;right:0;background:#0a0a0a;flex-direction:column;padding:24px 32px;gap:18px;';
+  });
+</script>
+
+</body>
+</html>
